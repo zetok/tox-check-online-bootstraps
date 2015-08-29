@@ -135,7 +135,7 @@ fn send_mail(creds: Credentials, message: String) {
     let email = builder.build();
 
     // Connect to remote server
-    let mut sender = SenderBuilder::new(&*creds.domain).unwrap()
+    let mut sender = SenderBuilder::new((&*creds.domain, 465)).unwrap()
             // Set the name sent during EHLO/HELO, default is `localhost`
             .hello_name(&creds.domain)
             // Add credentials for authentication
