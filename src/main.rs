@@ -111,10 +111,11 @@ fn main() {
             // to work correctly
             drop(std::io::stdout().flush());
 
-            if let Err(_e) = tox.bootstrap(&node.ip, node.port, node.pubkey) {
+            if let Err(e) = tox.bootstrap(&node.ip, node.port, node.pubkey) {
                 // break if something supplied won't work
                 println!("BAD BOOTSTRAP - FAILED ✗");
-                break;
+                println!("ERROR: {:?}", e);
+                continue;
             };
 
             let mut pushed = false;
