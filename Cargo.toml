@@ -1,0 +1,14 @@
+[package]
+name = "tox-check-online-bootstraps"
+version = "0.0.0"
+authors = ["zetok"]
+
+
+
+
+[dependencies.rstox]
+git = "https://github.com/suhr/rstox.git"
+
+
+[dependencies.chrono]
+chrono = "0.2"
