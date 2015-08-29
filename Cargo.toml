@@ -12,3 +12,6 @@ git = "https://github.com/suhr/rstox.git"
 
 [dependencies.chrono]
 chrono = "0.2"
+
+[dependencies.smtp]
+smtp = "0.1"
