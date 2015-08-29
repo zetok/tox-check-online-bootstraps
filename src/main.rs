@@ -135,16 +135,26 @@ fn send_mail(creds: Credentials, message: String) {
     let email = builder.build();
 
     // Connect to remote server
-    let mut sender = SenderBuilder::new((&*creds.domain, 465)).unwrap()
-            // Set the name sent during EHLO/HELO, default is `localhost`
-            .hello_name(&creds.domain)
-            // Add credentials for authentication
-            .credentials(&creds.login, &creds.passwd)
-            .build();
+    let mut sender = match SenderBuilder::new((&*creds.domain, 465)) {
+            Ok(s) => { s
+                    // Set the name sent during EHLO/HELO, default is `localhost`
+                    .hello_name(&creds.domain)
+                    // Add credentials for authentication
+                    .credentials(&creds.login, &creds.passwd)
+                    .build()
+            },
+            Err(e) => {
+                println!("Error while connecting to the server: {}", e);
+                return
+            },
+    };
 
     match sender.send(email) {
         Ok(_) => {},
-        Err(e) => panic!("Error while sending mail: {}", e),
+        Err(e) => {
+            println!("Error while sending mail: {}", e);
+            return
+        },
     }
 
 }
@@ -153,9 +163,13 @@ fn send_mail(creds: Credentials, message: String) {
 
 fn main() {
 
-    let nodes = match vec_strings("nodes_list") {
+    let nodes_file = "nodes_list";
+    let nodes = match vec_strings(nodes_file) {
         Ok(nds) => nds,
-        Err(_) => panic!("No \"nodes_list\" file!"),
+        Err(e) => {
+            println!("Error opening \"{}\" file: {:?}", nodes_file, e);
+            return
+        },
     };
 
     let mut to_return: Vec<String> = vec![];
@@ -232,6 +246,7 @@ fn main() {
             let push = format!("{}\n", s);
             send_string.push_str(&push);
         }
+
         // get credentials from file, and if successful, try to send mail
         let creds_file = ".properties";
         match get_credentials(creds_file) {
