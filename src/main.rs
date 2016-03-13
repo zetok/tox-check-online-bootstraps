@@ -154,9 +154,6 @@ fn main() {
                 }
                 tox.wait();
             }
-        } else {
-            // break if there was no node
-            break;
         }
     }
 

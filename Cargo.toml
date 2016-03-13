@@ -10,5 +10,5 @@ authors = ["zetok"]
 git = "https://github.com/suhr/rstox.git"
 
 
-[dependencies.chrono]
+[dependencies]
 chrono = "0.2"
